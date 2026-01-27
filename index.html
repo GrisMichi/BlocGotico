@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloc de Notas</title>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Almendra+Display&family=New+Rocker&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h1 te> BLOC DE NOTAS </h1>
+
+        <div class="info-bar">
+            <span id="charCount">Caracteres: 0</span>
+            <span id="wordCount">Palabras: 0</span>
+            <span id="saveStatus">Auto-guardado activado</span>
+        </div>
+
+        <div class="controls">
+            <input type="text" class="filename-input" id="filename" placeholder="Nombre del archivo"
+                value="mi-nota.txt">
+
+            <button class="btn-success" onclick="descargarArchivo()">
+                Descargar
+            </button>
+
+            <button class="btn-primary" onclick="document.getElementById('fileInput').click()">
+                Cargar Archivo
+            </button>
+
+            <button class="btn-danger" onclick="limpiarTexto()">
+                Limpiar
+            </button>
+
+            <button class="btn-secondary" onclick="copiarAlPortapapeles()">
+                Copiar
+            </button>
+        </div>
+
+        <input type="file" id="fileInput" accept=".txt" onchange="cargarArchivo(event)">
+
+        <textarea id="notepad" placeholder="Comienza a escribir aquí..."></textarea>
+    </div>
+
+    <script>
+        // Elementos del DOM
+        const notepad = document.getElementById('notepad');
+        const charCount = document.getElementById('charCount');
+        const wordCount = document.getElementById('wordCount');
+        const saveStatus = document.getElementById('saveStatus');
+        const filenameInput = document.getElementById('filename');
+
+        // Cargar texto guardado al iniciar
+        window.onload = function () {
+            const savedText = localStorage.getItem('notepadText');
+            const savedFilename = localStorage.getItem('notepadFilename');
+
+            if (savedText) {
+                notepad.value = savedText;
+                actualizarContadores();
+            }
+
+            if (savedFilename) {
+                filenameInput.value = savedFilename;
+            }
+        };
+
+        // Auto-guardar mientras se escribe
+        notepad.addEventListener('input', function () {
+            localStorage.setItem('notepadText', notepad.value);
+            actualizarContadores();
+            mostrarEstadoGuardado();
+        });
+
+        // Guardar nombre del archivo
+        filenameInput.addEventListener('input', function () {
+            localStorage.setItem('notepadFilename', filenameInput.value);
+        });
+
+        // Actualizar contadores de caracteres y palabras
+        function actualizarContadores() {
+            const text = notepad.value;
+            charCount.textContent = `Caracteres: ${text.length}`;
+
+            const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+            wordCount.textContent = `Palabras: ${words.length}`;
+        }
+
+        // Mostrar estado de guardado
+        function mostrarEstadoGuardado() {
+            saveStatus.textContent = 'Guardado';
+            saveStatus.style.color = 'black';
+
+            setTimeout(() => {
+                saveStatus.textContent = 'Auto-guardado activado';
+                saveStatus.style.color = 'black';
+            }, 2000);
+        }
+
+        // Descargar archivo
+        function descargarArchivo() {
+            const text = notepad.value;
+            const filename = filenameInput.value || 'nota.txt';
+
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+
+            Swal.fire({
+                title: '¡Éxito!',
+                text: 'Archivo descargado correctamente',
+                timer: 2000,
+                background: "#fff url(https://i.pinimg.com/736x/86/17/89/861789b72a59066d6f63e3826d0018a8.jpg)",
+                showConfirmButton: false
+            });
+        }
+
+        // Cargar archivo
+        function cargarArchivo(event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    notepad.value = e.target.result;
+                    localStorage.setItem('notepadText', notepad.value);
+                    actualizarContadores();
+
+                    // Actualizar nombre del archivo
+                    filenameInput.value = file.name;
+                    localStorage.setItem('notepadFilename', file.name);
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Archivo cargado!',
+                        text: 'Tu archivo se ha cargado correctamente',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                };
+
+                reader.readAsText(file);
+            }
+        }
+
+        // Limpiar texto
+        function limpiarTexto() {
+            if (notepad.value.length > 0) {
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "Vas a matar todo tu texto. Esta acción no se puede deshacer.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#f56565',
+                    cancelButtonColor: '#718096',
+                    confirmButtonText: 'Sí, limpiar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        notepad.value = '';
+                        localStorage.removeItem('notepadText');
+                        actualizarContadores();
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Limpiado!',
+                            text: 'El texto ha sido eliminado',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Sin contenido',
+                    text: 'No hay texto para limpiar',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            }
+        }
+
+        // Copiar al portapapeles
+        function copiarAlPortapapeles() {
+            if (notepad.value.length > 0) {
+                notepad.select();
+                document.execCommand('copy');
+
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Copiado!',
+                    text: 'Texto copiado al portapapeles',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    position: 'top-end',
+                    toast: true
+                });
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Sin contenido',
+                    text: 'No hay texto para copiar',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            }
+        }
+
+        // Atajos de teclado
+        document.addEventListener('keydown', function (e) {
+            // Ctrl + S para descargar
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                descargarArchivo();
+            }
+
+            // Ctrl + L para limpiar
+            if (e.ctrlKey && e.key === 'l') {
+                e.preventDefault();
+                limpiarTexto();
+            }
+        });
+    </script>
+</body>
+
+</html>
