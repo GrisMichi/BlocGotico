@@ -16,7 +16,7 @@
 
 <body>
     <div class="container">
-        <h1 te> BLOC DE NOTAS </h1>
+        <h1 te> ESCRIBE CUALQUIER COSA </h1>
 
         <div class="info-bar">
             <span id="charCount">Caracteres: 0</span>
@@ -47,7 +47,7 @@
 
         <input type="file" id="fileInput" accept=".txt" onchange="cargarArchivo(event)">
 
-        <textarea id="notepad" placeholder="Comienza a escribir aquí..."></textarea>
+        <textarea id="notepad" placeholder="Ella te observa..."></textarea>
     </div>
 
     <script>
@@ -119,7 +119,7 @@
             window.URL.revokeObjectURL(url);
 
             Swal.fire({
-                title: '¡Éxito!',
+                title: 'Descargado',
                 text: 'Archivo descargado correctamente',
                 timer: 2000,
                 background: "#fff url(https://i.pinimg.com/736x/86/17/89/861789b72a59066d6f63e3826d0018a8.jpg)",

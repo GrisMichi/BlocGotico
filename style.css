@@ -17,18 +17,18 @@ body {
 }
 
 .container {
-    background-image: url(https://i.pinimg.com/736x/32/b3/94/32b3947152d6895ef938920e0401b219.jpg);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     width: 100%;
     max-width: 800px;
     padding: 30px;
 }
 
 h1 {
-    color: #000000;
+    color: #940606;
     margin-bottom: 10px;
     font-size: 28px;
     text-align: center;
+    background-color: #000000;
+    padding:10px;
     font-family: "New Rocker", system-ui;
 }
 
@@ -59,51 +59,47 @@ button {
     font-size: 14px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-weight: 600;
+    font-family: "New Rocker", system-ui;
+    background: linear-gradient(#a55858 10%,#940606 80%);
 }
 
 .btn-primary {
-    background: #940606;
     color: white;
 }
 
 .btn-primary:hover {
-    background: #640f0f;
-    transform: translateY(-2px);
+    transform: translateY(2px);
     box-shadow: 0 4px 12px rgba(36, 10, 10, 0.4);
 }
 
 .btn-success {
-    background: #940606;
     color: white;
 }
 
 .btn-success:hover {
-    background: #38a169;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
+    background: #640f0f;
+    transform: translateY(2px);
+    box-shadow: 0 4px 12px rgba(36, 10, 10, 0.4);
 }
 
 .btn-danger {
-    background: #940606;
     color: white;
 }
 
 .btn-danger:hover {
-    background: #e53e3e;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
+    background: #640f0f;
+    transform: translateY(2px);
+    box-shadow: 0 4px 12px rgba(36, 10, 10, 0.4);
 }
 
 .btn-secondary {
-    background: #718096;
     color: white;
 }
 
 .btn-secondary:hover {
-    background: #4a5568;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(113, 128, 150, 0.4);
+    background: #640f0f;
+    transform: translateY(2px);
+    box-shadow: 0 4px 12px rgba(36, 10, 10, 0.4);
 }
 
 #fileInput {
@@ -135,6 +131,9 @@ textarea:focus {
     font-size: 14px;
     flex: 1;
     min-width: 200px;
+    background-color: #000000;
+    color: #940606;
+    font-family: "New Rocker", system-ui;
 }
 
 .filename-input:focus {
