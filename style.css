@@ -60,7 +60,7 @@ button {
     cursor: pointer;
     transition: all 0.3s ease;
     font-family: "New Rocker", system-ui;
-    background: linear-gradient(#a55858 10%,#940606 80%);
+    background: linear-gradient(#f13838 10%,#920e0e 80%);
 }
 
 .btn-primary {
@@ -68,6 +68,7 @@ button {
 }
 
 .btn-primary:hover {
+    background: #640f0f;
     transform: translateY(2px);
     box-shadow: 0 4px 12px rgba(36, 10, 10, 0.4);
 }
